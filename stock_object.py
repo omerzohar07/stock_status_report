@@ -46,30 +46,45 @@ class stock:
         return change 
     
     
-    def init_update_price(self):
+    def init_update_price(self) -> None:
         "The function update the last day close price first time."
 
         response = requests.get(url.format(symbol=self.symbol), headers=headers)
-        stock_data = response.json()
+        stock_data_json = response.json()[0]
         
-        last_close = stock_data[0]['close']
-        
-        self.price = last_close
+        self.price = get_stock_close_price_from_response_json(stock_data_json)
 
 
+    def get_stock_close_date_from_response_json(response_json: dict) -> datetime:
+        """The function gets the response json and returns the close date"""
 
-    def update_price(self):
+        full_close_date_str: str = response_json['date']
+
+        concated_close_date_str: str = full_close_date_str.split('T')[0]
+
+        close_date: datetime = datetime.strptime(concated_close_date_str, '%Y-%m-%d').date()
+
+        return close_date
+
+
+    def get_stock_close_price_from_response_json(response_json: dict) -> float:
+        return response_json['close']
+
+
+    def update_stock(self):
         """The function update the last day close price."""
-        
 
         response = requests.get(url.format(symbol=self.symbol), headers=headers)
-        stock_data = response.json()
+        stock_data_json = response.json()[0]
         
-        last_close = stock_data[0]['close']
+        last_close_price_from_json: datetime = get_stock_close_price_from_response_json(stock_data_json)
+        last_close_date_from_json: float = get_stock_close_date_from_response_json(stock_data_json)
         
-        if not ((self.last_updated_date == datetime.now().date()) and not (16 <= datetime.now().hour < 23)) or datetime.now().hour == 23:
+        if last_close_date_from_json != self.last_updated_date:
             self.previous_price = self.price
-            self.price = last_close
+            self.price = last_close_price_from_json
+            self.last_updated_date = last_close_date_from_json
+
             print(f'The last day price was {self.previous_price} and today closed as {self.price}')
 
         else:

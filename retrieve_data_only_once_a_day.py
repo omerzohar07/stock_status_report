@@ -59,7 +59,14 @@ def make_my_portfolio() -> Portfolio:
 
 
 def is_old_data(loaded_Portfolio: Portfolio) -> bool:
-    return loaded_Portfolio.get_last_update_time() != datetime.now().date() or (datetime.now().hour == 23) 
+    """
+    The function returns if there is a new trading day that has been from the last report.
+    If thats Sunday or Monday, I dont have anything to look. Otherwish, only if its after midnight.
+    """
+    
+    if loaded_Portfolio.get_last_update_time().strftime("%A") in ('Sunday','Monday'):
+        return False
+    return loaded_Portfolio.get_last_update_time() != datetime.now().date()  
 
 
 def save_new_data(my_portfolio: Portfolio) -> None:
@@ -76,10 +83,17 @@ def get_saved_data() -> Portfolio:
     
 
 def get_portfolio() -> Portfolio:
+    """
+    The function retreive the current saved protfolio. If it's no longer updated, it will call the new data. else, it will return it as is.
+    To check if there is there is new available data, it's uses the is_old_data function. 
+    """
+    
     my_loaded_Portfolio = get_saved_data()
+
     if (is_old_data(loaded_Portfolio= my_loaded_Portfolio)):
         my_loaded_Portfolio.update_portfolio() 
         save_new_data(my_loaded_Portfolio)
+       
         flag = f'I made new retrieve. This is the most relevant data for the {my_loaded_Portfolio.get_last_update_time()}'
 
     else:
