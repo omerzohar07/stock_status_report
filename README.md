@@ -1,1 +1,1 @@
-# stock_status_report
+#max 50 requests per hour, 1000 per day.
