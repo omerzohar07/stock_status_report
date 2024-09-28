@@ -65,7 +65,7 @@ class Portfolio:
     def update_portfolio(self):
         """The function update's the portfolio status."""
         for stock, price in self.stocks:
-            stock.update_price()
+            stock.update_stock()
         self.set_last_update_time()
 
 
@@ -78,7 +78,9 @@ class Portfolio:
     def get_str_display_output(self):
         """Returns the string of the portfolio's stocks and their values."""
         display_str_output = f"""
-            Total portfolio value: ${self.get_total_value()}, Total portfolio change from purchase: {self.get_portfolio_total_change()}%, Total portfolio last day change: {self.daily_change()} 
+            Total portfolio value: ${self.get_total_value()},
+            Total portfolio change from purchase: {self.get_portfolio_total_change()}%, 
+            Total portfolio last day change: {self.daily_change()} 
         """
         
         return display_str_output
