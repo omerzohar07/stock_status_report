@@ -2,6 +2,22 @@ from constants import url, headers
 import requests
 from datetime import datetime
 
+def get_stock_close_date_from_response_json(response_json: dict) -> datetime:
+    """The function gets the response json and returns the close date"""
+
+    full_close_date_str: str = response_json['date']
+
+    concated_close_date_str: str = full_close_date_str.split('T')[0]
+
+    close_date: datetime = datetime.strptime(concated_close_date_str, '%Y-%m-%d').date()
+
+    return close_date
+
+
+def get_stock_close_price_from_response_json(response_json: dict) -> float:
+    return response_json['close']
+
+
 class stock:
     
     def __init__(self, company_name, symbol, purchase_price=0.0):
@@ -55,24 +71,8 @@ class stock:
         self.price = get_stock_close_price_from_response_json(stock_data_json)
 
 
-    def get_stock_close_date_from_response_json(response_json: dict) -> datetime:
-        """The function gets the response json and returns the close date"""
-
-        full_close_date_str: str = response_json['date']
-
-        concated_close_date_str: str = full_close_date_str.split('T')[0]
-
-        close_date: datetime = datetime.strptime(concated_close_date_str, '%Y-%m-%d').date()
-
-        return close_date
-
-
-    def get_stock_close_price_from_response_json(response_json: dict) -> float:
-        return response_json['close']
-
-
     def update_stock(self):
-        """The function update the last day close price."""
+        """The function update the stock's last day close price and last update time."""
 
         response = requests.get(url.format(symbol=self.symbol), headers=headers)
         stock_data_json = response.json()[0]

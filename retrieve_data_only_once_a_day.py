@@ -3,59 +3,59 @@ from Portfolio_object import Portfolio
 from stock_object import stock
 from datetime import datetime
 
-def make_my_portfolio() -> Portfolio:
-    my_portfolio= Portfolio()
-    CrowdStrike_stock = stock(company_name='CrowdStrike'
-                       ,symbol='CRWD'
-                       ,purchase_price=282.00)
-    my_portfolio.add_stock(CrowdStrike_stock,7)
-
-    google_stock = stock(company_name='Google'
-                       ,symbol='GOOG'
-                       ,purchase_price=164.56)
-    my_portfolio.add_stock(google_stock,7)
-
-    russel2000_stock = stock(company_name='Russel2000'
-                       ,symbol='IWM'
-                       ,purchase_price=205.69)
-    my_portfolio.add_stock(russel2000_stock,6)
-
-    AMD_stock = stock(company_name='AMD'
-                       ,symbol='AMD'
-                       ,purchase_price=106.19)
-    my_portfolio.add_stock(AMD_stock,9)
-
-    adbe_stock = stock(company_name='Adobe'
-                       ,symbol='ADBE'
-                       ,purchase_price=470.00)
-    my_portfolio.add_stock(adbe_stock,2)
-
-    amazon_stock = stock(company_name='Amazon'
-                       ,symbol='AMZN'
-                       ,purchase_price=160.52)
-    my_portfolio.add_stock(amazon_stock,6)
-
-    dis_stock = stock(company_name='Disney'
-                       ,symbol='DIS'
-                       ,purchase_price=85.56)
-    my_portfolio.add_stock(dis_stock,7)
-
-    roku_stock = stock(company_name='Roku'
-                       ,symbol='ROKU'
-                       ,purchase_price=63.75)
-    my_portfolio.add_stock(roku_stock,6)
-
-    shopify_stock = stock(company_name='Shopify'
-                       ,symbol='SHOP'
-                       ,purchase_price=61)
-    my_portfolio.add_stock(shopify_stock,10)
-
-    asts_stock = stock(company_name='AST SpaceMobile'
-                       ,symbol='ASTS'
-                       ,purchase_price=26.68)
-    my_portfolio.add_stock(asts_stock,268)
-
-    return my_portfolio
+#def make_my_portfolio() -> Portfolio:
+#    my_portfolio= Portfolio()
+#    CrowdStrike_stock = stock(company_name='CrowdStrike'
+#                       ,symbol='CRWD'
+#                       ,purchase_price=282.00)
+#    my_portfolio.add_stock(CrowdStrike_stock,7)
+#
+#    google_stock = stock(company_name='Google'
+#                       ,symbol='GOOG'
+#                       ,purchase_price=164.56)
+#    my_portfolio.add_stock(google_stock,7)
+#
+#    russel2000_stock = stock(company_name='Russel2000'
+#                       ,symbol='IWM'
+#                       ,purchase_price=205.69)
+#    my_portfolio.add_stock(russel2000_stock,6)
+#
+#    AMD_stock = stock(company_name='AMD'
+#                       ,symbol='AMD'
+#                       ,purchase_price=106.19)
+#    my_portfolio.add_stock(AMD_stock,9)
+#
+#   adbe_stock = stock(company_name='Adobe'
+#                       ,symbol='ADBE'
+#                       ,purchase_price=470.00)
+#    my_portfolio.add_stock(adbe_stock,2)
+#
+#    amazon_stock = stock(company_name='Amazon'
+#                       ,symbol='AMZN'
+#                       ,purchase_price=160.52)
+#    my_portfolio.add_stock(amazon_stock,6)
+#
+#    dis_stock = stock(company_name='Disney'
+#                       ,symbol='DIS'
+#                       ,purchase_price=85.56)
+#    my_portfolio.add_stock(dis_stock,7)
+#
+#    roku_stock = stock(company_name='Roku'
+#                       ,symbol='ROKU'
+#                       ,purchase_price=63.75)
+#    my_portfolio.add_stock(roku_stock,6)
+#
+#    shopify_stock = stock(company_name='Shopify'
+#                       ,symbol='SHOP'
+#                       ,purchase_price=61)
+#    my_portfolio.add_stock(shopify_stock,10)
+#
+#    asts_stock = stock(company_name='AST SpaceMobile'
+#                       ,symbol='ASTS'
+#                       ,purchase_price=26.68)
+#    my_portfolio.add_stock(asts_stock,268)
+#
+#    return my_portfolio
 
 
 def is_old_data(loaded_Portfolio: Portfolio) -> bool:
@@ -64,13 +64,12 @@ def is_old_data(loaded_Portfolio: Portfolio) -> bool:
     If thats Sunday or Monday, I dont have anything to look. Otherwish, only if its after midnight.
     """
     
-    if loaded_Portfolio.get_last_update_time().strftime("%A") in ('Sunday','Monday'):
+    if datetime.now().date().strftime("%A") in ('Sunday','Monday'):
         return False
     return loaded_Portfolio.get_last_update_time() != datetime.now().date()  
 
 
 def save_new_data(my_portfolio: Portfolio) -> None:
-    portfolio = make_my_portfolio()
     with open('portfolio.pkl', 'wb') as file:
         pickle.dump(my_portfolio, file)
 
@@ -90,7 +89,8 @@ def get_portfolio() -> Portfolio:
     
     my_loaded_Portfolio = get_saved_data()
 
-    if (is_old_data(loaded_Portfolio= my_loaded_Portfolio)):
+    if is_old_data(my_loaded_Portfolio):
+        
         my_loaded_Portfolio.update_portfolio() 
         save_new_data(my_loaded_Portfolio)
        

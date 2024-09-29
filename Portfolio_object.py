@@ -71,12 +71,14 @@ class Portfolio:
 
     def display_daily_change(self):
         """Displays the portfolio's last day change"""
+
         daily_change = self.daily_change()
         print(f"Portfolio last day change is: {daily_change} percentages.")
 
 
     def get_str_display_output(self):
         """Returns the string of the portfolio's stocks and their values."""
+
         display_str_output = f"""
             Total portfolio value: ${self.get_total_value()},
             Total portfolio change from purchase: {self.get_portfolio_total_change()}%, 
@@ -87,6 +89,7 @@ class Portfolio:
 
     def display_portfolio(self):
         """Displays the portfolio's stocks and their values."""
+        
         print("Portfolio Summary:")
         for stock, count in self.stocks:
             print(f"{count} shares of {stock.company_name} ({stock.symbol}) at ${stock.price:.2f} each.")
