@@ -5,7 +5,7 @@ class Portfolio:
     def __init__(self):
         self.stocks = []  # To hold a list of tuples (Stock object, count of stocks)
         self.last_updated_date = self.set_init_last_update()
-       
+
 
     def set_init_last_update(self) -> datetime:
         return datetime.now().date()
@@ -21,8 +21,21 @@ class Portfolio:
 
     def add_stock(self, stock, count):
         """Adds a stock to the portfolio."""
+
         self.stocks.append((stock, count))
     
+
+    def change_stock_amount_of_shares(self, stock_symbol, new_amount) -> None:
+        """The function gets a stock a new amount of shares and set the parameters."""
+        #is_active = 1 if new_amount!=0 else 0
+
+        for index, stock_tuple in enumerate(self.stocks): 
+            if stock_symbol == stock_tuple[0].get_stock_symbol():
+                self.stocks[index] = (stock_tuple[0], new_amount)
+                break
+        
+        print(f'Done succsessfully, the {self.stocks[index][0].get_stock_symbol()} have changed to {self.stocks[index][1]} shares.')
+
 
     def get_total_value(self) -> float:
         """Calculates the total value of the portfolio."""
@@ -89,7 +102,7 @@ class Portfolio:
 
     def display_portfolio(self):
         """Displays the portfolio's stocks and their values."""
-        
+
         print("Portfolio Summary:")
         for stock, count in self.stocks:
             print(f"{count} shares of {stock.company_name} ({stock.symbol}) at ${stock.price:.2f} each.")
