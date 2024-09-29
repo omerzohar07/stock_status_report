@@ -6,7 +6,7 @@ def get_relevant_time_variables():
     return datetime.now().hour, datetime.now().minute + 2
 
 def send_message() -> None:
-    
+
     my_portfolio = get_portfolio()
 
     hour, minute = get_relevant_time_variables()

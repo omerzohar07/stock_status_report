@@ -45,7 +45,11 @@ class stock:
     def get_purchase_price(self):
         return self.purchase_price
     
+    
+    def get_stock_symbol(self) -> str:
+        return self.symbol
 
+    
     def get_stock_change(self):
         """Calculates the price change percentage compared to a purchase price."""
 
